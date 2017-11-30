@@ -1,0 +1,23 @@
+version: "2.1"
+services:
+
+  wordpress:
+    volumes:
+      - wordpress-app-sync:/var/www/html/web/app
+      - wordpress-config-sync:/var/www/html/config
+      
+  bedrock-installer:
+    volumes:
+      - wordpress-app-sync:/var/www/html/web/app
+      - wordpress-config-sync:/var/www/html/config
+
+  wordpress-installer:
+    volumes:
+      - wordpress-app-sync:/var/www/html/web/app
+      - wordpress-config-sync:/var/www/html/config
+      
+volumes:
+  wordpress-app-sync:
+    external: true
+  wordpress-config-sync:
+    external: true

@@ -1,0 +1,40 @@
+version: "2.1"
+services:
+    db:
+        image: dawidurbanski/mysql
+        ports:
+            - 3306:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: fWr}@2(X?d>zd7sc
+
+    wordpress:
+        image: dawidurbanski/wordpress-dev
+        links:
+            - db:mysql
+        ports:
+            - 80:80
+        depends_on:
+            - db
+        volumes:
+            - wordpress-path:/var/www/html
+            - ./wordpress/.env:/var/www/html/.env
+            - ./wordpress/composer.json:/var/www/html/composer.json
+    
+    bedrock-installer:
+        image: dawidurbanski/bedrock-installer
+        volumes:
+            - wordpress-path:/var/www/html
+            - ./wordpress/composer.json:/var/www/html/composer.json
+
+    wordpress-installer: 
+        image: dawidurbanski/wordpress-installer
+        volumes:
+            - wordpress-path:/var/www/html
+            - ./wordpress/.env:/var/www/html/.env
+        env_file:
+            - ./wordpress/.env
+        links:
+            - db:mysql
+
+volumes:
+    wordpress-path:
